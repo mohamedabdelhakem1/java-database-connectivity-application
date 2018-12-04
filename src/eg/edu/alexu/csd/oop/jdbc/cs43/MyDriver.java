@@ -1,21 +1,26 @@
 package eg.edu.alexu.csd.oop.jdbc.cs43;
 
+import java.util.*;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.Driver;
 
 import java.sql.DriverPropertyInfo;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.util.LinkedList;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
 
+import com.mysql.cj.jdbc.ConnectionGroupManager;
+
 public class MyDriver implements Driver {
-	private Properties properties;
-	
+
 	public MyDriver() {
-		// TODO Auto-generated constructor stub
+		
 	}
-	
 
 	@Override
 	public boolean acceptsURL(String url) throws SQLException {
@@ -27,17 +32,23 @@ public class MyDriver implements Driver {
 
 	@Override
 	public Connection connect(String url, Properties info) throws SQLException {
+		
 		if (acceptsURL(url)) {
-			properties = info;
-			Connection connection = new MyConnection();
+			
+			File dir = (File) info.get("path");
+			String path = dir.getAbsolutePath();
+			ConnectionManager connectionManager = ConnectionManager.getInstance();
+			return connectionManager.acquireConnection(path); 
 		}
 		return null;
 	}
 
 	@Override
 	public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
-		
-		return null;
+		DriverPropertyInfo info2 = new DriverPropertyInfo("user", "admin");
+		DriverPropertyInfo info3 = new DriverPropertyInfo("password", "admin");
+		DriverPropertyInfo[] infos = new DriverPropertyInfo[] {info2,info3};
+		return infos;
 	}
 
 	@Override

@@ -1,5 +1,11 @@
 package eg.edu.alexu.csd.oop.jdbc.cs43;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import eg.edu.alexu.csd.oop.db.Database;
+import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,28 +13,36 @@ import java.sql.SQLWarning;
 import java.sql.Statement;
 
 public class MyStatement implements Statement {
+	//columns are one based
+	private List<String> batches;
+	private Connection connection;
+	private	Database database = MyDatabase.getInstance();
+	public MyStatement(Connection connection) {
+		this.connection =connection;
+		batches = new LinkedList<>(); //list of sql commands to be executed
+
+	}
+
 	@Override
 	public void addBatch(String sql) throws SQLException {
-		// TODO Auto-generated method stub
-
+		batches.add(sql);
 	}
 
 	@Override
 	public void clearBatch() throws SQLException {
-		// TODO Auto-generated method stub
-
+		batches.clear();
 	}
 
 	@Override
 	public void close() throws SQLException {
-		// TODO Auto-generated method stub
-
+		connection = null;
+		database = null;
 	}
 
 	@Override
 	public boolean execute(String sql) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return database.executeStructureQuery(sql);
 	}
 
 	@Override
@@ -46,13 +60,13 @@ public class MyStatement implements Statement {
 	@Override
 	public int executeUpdate(String sql) throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		return database.executeUpdateQuery(sql);
 	}
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return connection;
 	}
 
 	public int getQueryTimeout() throws SQLException {

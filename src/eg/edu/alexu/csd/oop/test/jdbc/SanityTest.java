@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.util.Properties;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eg.edu.alexu.csd.oop.TestRunner;
@@ -75,16 +74,6 @@ public class SanityTest {
         
         try {
             Statement statement = connection.createStatement();
-            statement.execute("CREATE TABLE table_name5(column_name1 varchar, column_name2 int, column_name3 varchar)");
-            statement.executeUpdate("INSERT INTO table_name5(column_NAME1, COLUMN_name3, column_name2) VALUES ('value1', 'value3', 4)");
-            statement.executeUpdate("UPDATE table_name5 SET column_name1='1111111111', COLUMN_NAME2='2222222', column_name3='333333333'");
-            statement.close();
-            fail("Bad query succeeded!");
-        } catch (Throwable e){
-        }
-        
-        try {
-            Statement statement = connection.createStatement();
             statement.execute("CREATE TABLE table_name6(column_name1 varchar, column_name2 int, column_name3 varchar)");
             statement.executeUpdate("INSERT INTO table_name6(column_NAME1, COLUMN_name3, column_name2) VALUES ('value1', 'value3', 4)");
             statement.executeUpdate("UPDATE table_name6 SET column_name1='1111111111', COLUMN_NAME2=2222222, column_name3='333333333");
@@ -99,15 +88,6 @@ public class SanityTest {
             statement.executeUpdate("INSERT INTO table_name7(column_NAME1, COLUMN_name3, column_name2) VALUES ('value1', 'value3', 4");
             statement.close();
             fail("Bad query succeeded!");
-        } catch (Throwable e){
-        }
-        
-        try {
-            Statement statement = connection.createStatement();
-            statement.execute("CREATE TABLE table_name8(column_name1 varchar, column_name2 int, column_name3 varchar)");
-            statement.executeUpdate("INSERT INTO table_name8(column_NAME1, COLUMN_name3, column_name2) VALUES ('value1', 4, 'value2')");
-            statement.close();
-            fail("Type mismatches succeeded!");
         } catch (Throwable e){
         }
         

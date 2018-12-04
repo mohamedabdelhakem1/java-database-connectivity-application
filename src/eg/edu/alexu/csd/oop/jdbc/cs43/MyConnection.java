@@ -1,5 +1,4 @@
 package eg.edu.alexu.csd.oop.jdbc.cs43;
-
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -19,22 +18,36 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+import eg.edu.alexu.csd.oop.db.Database;
+import eg.edu.alexu.csd.oop.db.cs43.DataBaseBufferPool;
+import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
+
 public class MyConnection implements Connection {
+	private  String path;
+	private Database database;
+	
+	public MyConnection(String path) {
+		this.path = path;
+		database = MyDatabase.getInstance();
+	}
+	
 	@Override
 	public Statement createStatement() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Statement statement = new MyStatement(this);
+		return statement;
 	}
 
 	@Override
 	public void close() throws SQLException {
-		// TODO Auto-generated method stub
-
+		DataBaseBufferPool pool = DataBaseBufferPool.getInstance();
+		pool.unloadCache();
+		pool.destroy();
+		database = null;
 	}
 
 	@Override
 	public boolean isWrapperFor(Class<?> arg0) throws SQLException {
-	throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -190,13 +203,13 @@ public class MyConnection implements Connection {
 	@Override
 	public PreparedStatement prepareStatement(String arg0) throws SQLException {
 		throw new UnsupportedOperationException();
-		
+
 	}
 
 	@Override
 	public PreparedStatement prepareStatement(String arg0, int arg1) throws SQLException {
 		throw new UnsupportedOperationException();
-	
+
 	}
 
 	@Override

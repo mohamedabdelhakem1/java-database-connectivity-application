@@ -1,6 +1,5 @@
 package eg.edu.alexu.csd.oop.test.jdbc;
 import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.ResultSet;
