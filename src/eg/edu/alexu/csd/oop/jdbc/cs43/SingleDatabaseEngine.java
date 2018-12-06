@@ -18,9 +18,12 @@ import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
 public class SingleDatabaseEngine {
 	private Database database;
 	private boolean select = false;
+	private String path;
 
-	public SingleDatabaseEngine() {
+	public SingleDatabaseEngine(String path) {
+		this.path = path;
 		database = MyDatabase.getInstance();
+		MyDatabase.setParentFolder(path + System.getProperty("file.separator"));
 	}
 
 	public boolean CreateDatabase(String databaseName) {
@@ -76,7 +79,7 @@ public class SingleDatabaseEngine {
 				}
 			} else if (strs[0].equalsIgnoreCase("drop") && strs[1].equalsIgnoreCase("database")) {
 
-				CreateDatabase(strs[2]);
+			//	CreateDatabase( path+ System.getProperty("file.separator")+strs[2]);			
 				return Boolean.valueOf(executeStructureQuery(sql));
 
 			} else if (strs[1].equalsIgnoreCase("table")) {

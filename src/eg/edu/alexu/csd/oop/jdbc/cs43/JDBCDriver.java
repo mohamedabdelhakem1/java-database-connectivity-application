@@ -15,9 +15,9 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
 
 
-public class MyDriver implements Driver {
+public class JDBCDriver implements Driver {
 
-	public MyDriver() {
+	public JDBCDriver() {
 		
 	}
 

@@ -23,12 +23,13 @@ public class MyStatement implements Statement {
 	private Connection connection;
 	private SingleDatabaseEngine engine;
 	private int timeout = 0;
+	private String path ;
 
-	public MyStatement(Connection connection) {
-		engine = new SingleDatabaseEngine();
+	public MyStatement(Connection connection ,String path) {
+		engine = new SingleDatabaseEngine(path);
 		this.connection = connection;
 		batches = new LinkedList<>(); // list of sql commands to be executed
-
+		this.path = path;
 	}
 
 	@Override
@@ -130,7 +131,7 @@ public class MyStatement implements Statement {
 	@Override
 	public void cancel() throws SQLException {
 		throw new UnsupportedOperationException();
-	}
+	}	
 
 	@Override
 	public void clearWarnings() throws SQLException {

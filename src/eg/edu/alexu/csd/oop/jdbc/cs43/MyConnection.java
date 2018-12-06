@@ -39,7 +39,7 @@ public class MyConnection implements Connection {
 
 	@Override
 	public Statement createStatement() throws SQLException {
-		Statement statement = new MyStatement(this);
+		Statement statement = new MyStatement(this , path);
 		statements.add(statement);
 		return statement;
 	}
