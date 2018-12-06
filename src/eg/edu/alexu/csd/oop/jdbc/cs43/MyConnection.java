@@ -24,13 +24,13 @@ import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
 
 public class MyConnection implements Connection {
 	private  String path;
-	private Database database;
-	
-	public MyConnection(String path) {
+	private String url;
+	public MyConnection(String path , String url) {
 		this.path = path;
-		database = MyDatabase.getInstance();
+		this.url = url;
+		
 	}
-	
+
 	@Override
 	public Statement createStatement() throws SQLException {
 		Statement statement = new MyStatement(this);
@@ -39,10 +39,8 @@ public class MyConnection implements Connection {
 
 	@Override
 	public void close() throws SQLException {
-		DataBaseBufferPool pool = DataBaseBufferPool.getInstance();
-		pool.unloadCache();
-		pool.destroy();
-		database = null;
+		ConnectionManager manager = ConnectionManager.getInstance();
+		manager.CloseConnection(path);
 	}
 
 	@Override

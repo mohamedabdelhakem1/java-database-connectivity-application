@@ -4,34 +4,57 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 public class MyResultSetMetaData implements ResultSetMetaData {
+	private String table;
+	private String[] types;
+	private String[] columns;
+
+	public MyResultSetMetaData(String database, String[] types, String[] columns) {
+		this.table = database;
+		this.columns = columns;
+		this.types = types;
+	}
+
 	@Override
 	public int getColumnCount() throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		return columns.length;
 	}
 
 	@Override
 	public String getColumnLabel(int arg0) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return getColumnName(arg0);
 	}
 
 	@Override
 	public String getColumnName(int arg0) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+
+		try {
+			return columns[arg0];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new SQLException();
+		}
 	}
 
 	@Override
 	public int getColumnType(int arg0) throws SQLException {
-		// TODO Auto-generated method stub
+		try {
+			String s = types[arg0];
+			if(s.equals("integer")) {
+				return java.sql.Types.INTEGER;
+			} else if(s.equals("string")) {
+				return java.sql.Types.VARCHAR;
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			throw new SQLException();
+		}
 		return 0;
 	}
 
 	@Override
 	public String getTableName(int arg0) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		return table;
 	}
 
 	@Override

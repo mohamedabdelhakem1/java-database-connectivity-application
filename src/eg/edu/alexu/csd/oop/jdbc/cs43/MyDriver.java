@@ -14,7 +14,6 @@ import java.util.Properties;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.logging.Logger;
 
-import com.mysql.cj.jdbc.ConnectionGroupManager;
 
 public class MyDriver implements Driver {
 
@@ -32,23 +31,34 @@ public class MyDriver implements Driver {
 
 	@Override
 	public Connection connect(String url, Properties info) throws SQLException {
-		
+
 		if (acceptsURL(url)) {
 			
 			File dir = (File) info.get("path");
 			String path = dir.getAbsolutePath();
 			ConnectionManager connectionManager = ConnectionManager.getInstance();
-			return connectionManager.acquireConnection(path); 
+			
+			return connectionManager.acquireConnection(path);
 		}
 		return null;
 	}
 
 	@Override
 	public DriverPropertyInfo[] getPropertyInfo(String url, Properties info) throws SQLException {
-		DriverPropertyInfo info2 = new DriverPropertyInfo("user", "admin");
-		DriverPropertyInfo info3 = new DriverPropertyInfo("password", "admin");
-		DriverPropertyInfo[] infos = new DriverPropertyInfo[] {info2,info3};
-		return infos;
+		if (acceptsURL(url)) {
+			DriverPropertyInfo[] infos = new DriverPropertyInfo[info.size() + 1];
+			DriverPropertyInfo info2 = new DriverPropertyInfo("url", url);
+			infos[0] = info2;
+			int i = 1;
+			for (Entry<Object,Object> e:info.entrySet()) {
+				infos[i] = new DriverPropertyInfo(String.valueOf(e.getKey()),String.valueOf(e.getValue()));
+				i++;
+			}
+
+			return infos;
+		}
+
+		return null;
 	}
 
 	@Override

@@ -2,24 +2,32 @@ package eg.edu.alexu.csd.oop.jdbc.cs43;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import org.hamcrest.core.IsInstanceOf;
 
 import eg.edu.alexu.csd.oop.db.Database;
+import eg.edu.alexu.csd.oop.db.cs43.XMLData;
 import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 
 public class MyStatement implements Statement {
-	//columns are one based
+	// columns are one based
 	private List<String> batches;
 	private Connection connection;
-	private	Database database = MyDatabase.getInstance();
+	private SingleDatabaseEngine engine;
+	private int timeout = 0;
+
 	public MyStatement(Connection connection) {
-		this.connection =connection;
-		batches = new LinkedList<>(); //list of sql commands to be executed
+		engine = new SingleDatabaseEngine();
+		this.connection = connection;
+		batches = new LinkedList<>(); // list of sql commands to be executed
 
 	}
 
@@ -36,47 +44,70 @@ public class MyStatement implements Statement {
 	@Override
 	public void close() throws SQLException {
 		connection = null;
-		database = null;
+		engine.closeEngine();
 	}
 
 	@Override
 	public boolean execute(String sql) throws SQLException {
-		
-		return database.executeStructureQuery(sql);
+		Object object = engine.execute(sql);
+		if (object instanceof Boolean) {
+			return (Boolean) object;
+		}
+		/*
+		 * else if (object instanceof Integer) { return false; } else if (object
+		 * instanceof Object[][]) { return true; }
+		 */
+		return false;
+
 	}
 
 	@Override
 	public int[] executeBatch() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		int[] RowsAffected = new int[batches.size()];
+		for (int i = 0; i < RowsAffected.length; i++) {
+			String sql = batches.get(i);
+			Object object = engine.execute(sql);
+			if (object instanceof Integer) {
+				RowsAffected[i] = Integer.valueOf(String.valueOf(object));
+			} else {
+				RowsAffected[i] = 0;
+			}
+		}
+		return RowsAffected;
 	}
 
 	@Override
 	public ResultSet executeQuery(String sql) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Object[][] result = engine.executeQuery(sql);
+
+		XMLData xmldata = engine.getCurrentTableMetaData();
+		Map<String, Object> map = xmldata.getXml();
+		String[] columns = (String[]) map.get("columns");
+		String[] types = (String[]) map.get("types");
+		ResultSetMetaData data = new MyResultSetMetaData((String) map.get("tablename"), types, columns);
+
+		ResultSet resultSet = new MyResultset(data, result, (String[]) map.get("columns"), this);
+		return resultSet;
 	}
 
 	@Override
 	public int executeUpdate(String sql) throws SQLException {
-		// TODO Auto-generated method stub
-		return database.executeUpdateQuery(sql);
+		return engine.executeUpdateQuery(sql);
 	}
 
 	@Override
 	public Connection getConnection() throws SQLException {
-		
 		return connection;
 	}
 
 	public int getQueryTimeout() throws SQLException {
 		// TODO Auto-generated method stub
-		return 0;
+		return timeout;
 	}
 
 	@Override
 	public void setQueryTimeout(int seconds) throws SQLException {
-		// TODO Auto-generated method stub
+		timeout = seconds;
 
 	}
 
