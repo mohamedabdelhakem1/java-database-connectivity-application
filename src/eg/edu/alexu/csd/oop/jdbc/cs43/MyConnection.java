@@ -1,4 +1,5 @@
 package eg.edu.alexu.csd.oop.jdbc.cs43;
+
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -14,6 +15,8 @@ import java.sql.SQLXML;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.sql.Struct;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -23,17 +26,21 @@ import eg.edu.alexu.csd.oop.db.cs43.DataBaseBufferPool;
 import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
 
 public class MyConnection implements Connection {
-	private  String path;
+	private String path;
 	private String url;
-	public MyConnection(String path , String url) {
+	private List<Statement> statements;
+
+	public MyConnection(String path, String url) {
+		statements = new LinkedList<>();
 		this.path = path;
 		this.url = url;
-		
+
 	}
 
 	@Override
 	public Statement createStatement() throws SQLException {
 		Statement statement = new MyStatement(this);
+		statements.add(statement);
 		return statement;
 	}
 
@@ -41,6 +48,9 @@ public class MyConnection implements Connection {
 	public void close() throws SQLException {
 		ConnectionManager manager = ConnectionManager.getInstance();
 		manager.CloseConnection(path);
+		for (int i = 0; i < statements.size(); i++) {
+			statements.get(i).close();
+		}
 	}
 
 	@Override

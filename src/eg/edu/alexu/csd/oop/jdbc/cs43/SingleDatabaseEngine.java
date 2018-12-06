@@ -50,6 +50,7 @@ public class SingleDatabaseEngine {
 			e.printStackTrace();
 		}
 		pool.destroy();
+		
 	}
 
 	// returns the current meta data of the table in case of select query.
