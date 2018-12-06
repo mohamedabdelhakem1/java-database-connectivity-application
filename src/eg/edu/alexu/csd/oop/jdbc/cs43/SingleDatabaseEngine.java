@@ -45,24 +45,14 @@ public class SingleDatabaseEngine {
 	}
 
 	public void closeEngine() {
-		DataBaseBufferPool pool = DataBaseBufferPool.getInstance();
-		try {
-			pool.unloadCache();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pool.destroy();
+		MyDatabase.closeEngine();
 		
 	}
 
 	// returns the current meta data of the table in case of select query.
 	public Map<String, Object> getCurrentTableMetaData() {
 		if (select) {
-			DataBaseBufferPool pool = DataBaseBufferPool.getInstance();
-			Map<String, Object> data = pool.getCurrentTableMetaData();
-			select = false;
-			return data;
+			return MyDatabase.getCurrentTableMetaData();
 		}
 		return null;
 	}

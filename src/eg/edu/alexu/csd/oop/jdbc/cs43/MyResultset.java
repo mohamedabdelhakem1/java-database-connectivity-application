@@ -56,7 +56,12 @@ public class MyResultset implements ResultSet {
 		if (data == null) {
 			throw new SQLException();
 		}
-		Cursor = arg0;
+		if (arg0 < 0) {
+			Cursor = table.length + arg0 + 1;
+		} else {
+			Cursor = arg0;
+		}
+
 		if (arg0 >= 1 && arg0 <= table.length) {
 			return true;
 		}
@@ -203,7 +208,7 @@ public class MyResultset implements ResultSet {
 		} catch (Exception e) {
 			return null;
 		}
-		
+
 	}
 
 	@Override
@@ -310,9 +315,10 @@ public class MyResultset implements ResultSet {
 		if (data == null) {
 			throw new SQLException();
 		}
-		if (Cursor <= 0) {
+		if (Cursor == 0) {
 			return false;
 		} else {
+
 			Cursor--;
 			return true;
 		}
