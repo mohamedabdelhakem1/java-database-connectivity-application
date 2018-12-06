@@ -52,11 +52,19 @@ public class MyStatement implements Statement {
 		Object object = engine.execute(sql);
 		if (object instanceof Boolean) {
 			return (Boolean) object;
+		} else if (object instanceof Integer) {
+			if ((Integer) object > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else if (object instanceof Object[][]) {
+			if (object == null || ((Object[][]) object).length > 0) {
+				return true;
+			}
+			return false;
 		}
-		/*
-		 * else if (object instanceof Integer) { return false; } else if (object
-		 * instanceof Object[][]) { return true; }
-		 */
+
 		return false;
 
 	}
@@ -79,14 +87,12 @@ public class MyStatement implements Statement {
 	@Override
 	public ResultSet executeQuery(String sql) throws SQLException {
 		Object[][] result = engine.executeQuery(sql);
-
-		XMLData xmldata = engine.getCurrentTableMetaData();
-		Map<String, Object> map = xmldata.getXml();
+		Map<String, Object> map = engine.getCurrentTableMetaData();
 		String[] columns = (String[]) map.get("columns");
 		String[] types = (String[]) map.get("types");
 		ResultSetMetaData data = new MyResultSetMetaData((String) map.get("tablename"), types, columns);
 
-		ResultSet resultSet = new MyResultset(data, result, (String[]) map.get("columns"), this);
+		ResultSet resultSet = new MyResultset(data, result, columns, this);
 		return resultSet;
 	}
 

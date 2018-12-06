@@ -300,7 +300,6 @@ public class SmokeTest {
             while(result.next())    rows++;
             Assert.assertNotNull("Null result retruned", result);
             Assert.assertEquals("Wrong number of rows", 2, rows);
-            System.out.println(rows);
             Assert.assertEquals("Wrong number of columns", 1, result.getMetaData().getColumnCount());
             statement.close();
         } catch (Throwable e){

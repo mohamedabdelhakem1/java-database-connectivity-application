@@ -16,13 +16,13 @@ public class MyResultSetMetaData implements ResultSetMetaData {
 
 	@Override
 	public int getColumnCount() throws SQLException {
-		// TODO Auto-generated method stub
+
 		return columns.length;
 	}
 
 	@Override
 	public String getColumnLabel(int arg0) throws SQLException {
-		// TODO Auto-generated method stub
+
 		return getColumnName(arg0);
 	}
 
@@ -30,7 +30,7 @@ public class MyResultSetMetaData implements ResultSetMetaData {
 	public String getColumnName(int arg0) throws SQLException {
 
 		try {
-			return columns[arg0];
+			return columns[arg0-1];
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new SQLException();
 		}
@@ -39,10 +39,10 @@ public class MyResultSetMetaData implements ResultSetMetaData {
 	@Override
 	public int getColumnType(int arg0) throws SQLException {
 		try {
-			String s = types[arg0];
-			if(s.equals("integer")) {
+			String s = types[arg0-1];
+			if (s.equals("integer")) {
 				return java.sql.Types.INTEGER;
-			} else if(s.equals("string")) {
+			} else if (s.equals("string")) {
 				return java.sql.Types.VARCHAR;
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
@@ -53,7 +53,7 @@ public class MyResultSetMetaData implements ResultSetMetaData {
 
 	@Override
 	public String getTableName(int arg0) throws SQLException {
-		// TODO Auto-generated method stub
+
 		return table;
 	}
 

@@ -2,6 +2,7 @@ package eg.edu.alexu.csd.oop.jdbc.cs43;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import eg.edu.alexu.csd.oop.db.Database;
@@ -52,17 +53,17 @@ public class SingleDatabaseEngine {
 	}
 
 	// returns the current meta data of the table in case of select query.
-	public XMLData getCurrentTableMetaData() {
+	public Map<String, Object> getCurrentTableMetaData() {
 		if (select) {
 			DataBaseBufferPool pool = DataBaseBufferPool.getInstance();
-			XMLData data = pool.getCurrentTableMetaData();
+			Map<String, Object> data = pool.getCurrentTableMetaData();
 			select = false;
 			return data;
 		}
 		return null;
 	}
 
-	public Object execute(String sql) {
+	public Object execute(String sql) throws SQLException {
 		String pattern = "(\\s+)";
 		Pattern pat = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
 		String[] strs = pat.split(sql.trim()); // removed trailing and leading spaces
@@ -73,33 +74,25 @@ public class SingleDatabaseEngine {
 					return CreateDatabase(strs[2]);
 				}
 			} else if (strs[0].equalsIgnoreCase("drop") && strs[1].equalsIgnoreCase("database")) {
-				try {
-					CreateDatabase(strs[2]);
-					return Boolean.valueOf(executeStructureQuery(sql));
-				} catch (SQLException e) {
 
-				}
-			}  else if (strs[1].equalsIgnoreCase("table")) {
-				try {
-					return Boolean.valueOf(executeStructureQuery(sql));
-				} catch (SQLException e) {
+				CreateDatabase(strs[2]);
+				return Boolean.valueOf(executeStructureQuery(sql));
 
-				}
+			} else if (strs[1].equalsIgnoreCase("table")) {
+
+				return Boolean.valueOf(executeStructureQuery(sql));
+
 			}
 
 		} else if (strs[0].equalsIgnoreCase("delete") || strs[0].equalsIgnoreCase("insert")
 				|| (strs[0].equalsIgnoreCase("update"))) {
-			try {
-				return Integer.valueOf(executeUpdateQuery(sql));
-			} catch (SQLException e) {
 
-			}
+			return Integer.valueOf(executeUpdateQuery(sql));
+
 		} else if (strs[0].equalsIgnoreCase("select")) {
-			try {
-				return (Object[][])executeQuery(sql);
-			} catch (SQLException e) {
 
-			}
+			return (Object[][]) executeQuery(sql);
+
 		}
 		return null;
 
