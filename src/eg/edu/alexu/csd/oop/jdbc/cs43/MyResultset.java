@@ -57,12 +57,21 @@ public class MyResultset implements ResultSet {
 			throw new SQLException();
 		}
 		if (arg0 < 0) {
-			Cursor = table.length + arg0 + 1;
-		} else {
+			if (Math.abs(arg0) <= table.length + 1) {
+				Cursor = table.length + arg0 + 1;
+			} else {
+				Cursor = table.length + 1;
+			}
+			return false;
+		} else if (arg0 == 0) {
 			Cursor = arg0;
-		}
-
-		if (arg0 >= 1 && arg0 <= table.length) {
+			return false;
+		} else if (arg0 >= 1) {
+			if (arg0 <= table.length+1) {
+				Cursor = arg0;
+			} else {
+				Cursor = table.length + 1;
+			}
 			return true;
 		}
 		return false;
@@ -116,6 +125,7 @@ public class MyResultset implements ResultSet {
 		}
 		if (table.length != 0) {
 			Cursor = 1;
+			return true;
 		}
 		return false;
 	}
@@ -125,8 +135,8 @@ public class MyResultset implements ResultSet {
 		if (data == null) {
 			throw new SQLException();
 		}
-		// valid index from 1 to table.length
-		if (table == null || table.length == 0 || arg0 < 1 || arg0 > table.length) {
+		// valid index from 1 to table[0].length
+		if (table == null || table.length == 0 || arg0 < 1 || arg0 > table[0].length) {
 			throw new SQLException();
 		}
 		try {
@@ -143,9 +153,9 @@ public class MyResultset implements ResultSet {
 		if (data == null) {
 			throw new SQLException();
 		}
-		// valid index from 1 to table.length
+		// valid index from 1 to table[0].length
 		int arg = findColumn(arg0);
-		if (table == null || table.length == 0 || arg < 1 || arg > table.length) {
+		if (table == null || table.length == 0 || arg < 1 || arg > table[0].length) {
 			throw new SQLException();
 		}
 		try {
@@ -170,7 +180,7 @@ public class MyResultset implements ResultSet {
 			throw new SQLException();
 		}
 		// valid index from 1 to table.length
-		if (table == null || table.length == 0 || arg0 < 1 || arg0 > table.length) {
+		if (table == null || table.length == 0 || arg0 < 1 || arg0 > table[0].length) {
 			throw new SQLException();
 		}
 		try {
@@ -195,11 +205,7 @@ public class MyResultset implements ResultSet {
 		if (data == null) {
 			throw new SQLException();
 		}
-		if (data == null) {
-			throw new SQLException();
-		}
-
-		if (table == null || table.length == 0 || arg0 < 1 || arg0 > table.length) {
+		if (table == null || table.length == 0 || arg0 < 1 || arg0 > table[0].length) {
 			throw new SQLException();
 		}
 		try {
@@ -218,7 +224,7 @@ public class MyResultset implements ResultSet {
 			throw new SQLException();
 		}
 		int arg = findColumn(arg0);
-		if (table == null || table.length == 0 || arg < 1 || arg > table.length) {
+		if (table == null || table.length == 0 || arg < 1 || arg > table[0].length) {
 			throw new SQLException();
 		}
 		try {
@@ -301,10 +307,10 @@ public class MyResultset implements ResultSet {
 		if (data == null) {
 			throw new SQLException();
 		}
-		if (Cursor >= table.length) {
+		Cursor++;
+		if (Cursor > table.length) {
 			return false;
 		} else {
-			Cursor++;
 			return true;
 		}
 
@@ -315,11 +321,11 @@ public class MyResultset implements ResultSet {
 		if (data == null) {
 			throw new SQLException();
 		}
-		if (Cursor == 0) {
+		Cursor--;
+		if (Cursor <= 0) {
+			Cursor = 0;
 			return false;
 		} else {
-
-			Cursor--;
 			return true;
 		}
 	}
