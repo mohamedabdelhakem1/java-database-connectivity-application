@@ -47,7 +47,7 @@ public class MyConnection implements Connection {
 	@Override
 	public void close() throws SQLException {
 		ConnectionManager manager = ConnectionManager.getInstance();
-		manager.CloseConnection(path);
+		manager.releaseConnection(path);
 		for (int i = 0; i < statements.size(); i++) {
 			statements.get(i).close();
 		}

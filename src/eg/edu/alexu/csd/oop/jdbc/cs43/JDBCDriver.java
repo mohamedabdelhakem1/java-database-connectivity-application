@@ -37,7 +37,6 @@ public class JDBCDriver implements Driver {
 			File dir = (File) info.get("path");
 			String path = dir.getAbsolutePath();
 			ConnectionManager connectionManager = ConnectionManager.getInstance();
-			
 			return connectionManager.acquireConnection(path);
 		}
 		return null;

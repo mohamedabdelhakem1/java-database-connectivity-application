@@ -6,24 +6,18 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import eg.edu.alexu.csd.oop.db.Database;
-import eg.edu.alexu.csd.oop.db.cs43.DataBaseBufferPool;
-import eg.edu.alexu.csd.oop.db.cs43.ExecuteQuery;
-import eg.edu.alexu.csd.oop.db.cs43.ExecuteStructureQuerys;
-import eg.edu.alexu.csd.oop.db.cs43.XMLData;
-import eg.edu.alexu.csd.oop.db.cs43.commandConcreteClasses.SelectQueryRequest;
-import eg.edu.alexu.csd.oop.db.cs43.commandConcreteClasses.StructureQueryRequest;
-import eg.edu.alexu.csd.oop.db.cs43.commandConcreteClasses.UpdateQueryRequest;
+
 import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
 
 // decorator
-public class SingleDatabaseEngine {
+public class SingleDatabaseEngine implements EngineDecorator{
 	
 	private Database database;
 	private boolean select = false;
-	private String path;
+
 
 	public SingleDatabaseEngine(String path) {
-		this.path = path;
+		
 		database = MyDatabase.getInstance();
 		MyDatabase.setParentFolder(path + System.getProperty("file.separator"));
 	}
