@@ -4,12 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.hamcrest.core.IsInstanceOf;
-
-import eg.edu.alexu.csd.oop.db.Database;
-import eg.edu.alexu.csd.oop.db.cs43.XMLData;
-import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -23,9 +17,9 @@ public class MyStatement implements Statement {
 	private Connection connection;
 	private SingleDatabaseEngine engine;
 	private int timeout = 0;
-	private String path ;
+	private String path;
 
-	public MyStatement(Connection connection ,String path) {
+	public MyStatement(Connection connection, String path) {
 		engine = new SingleDatabaseEngine(path);
 		this.connection = connection;
 		batches = new LinkedList<>(); // list of sql commands to be executed
@@ -34,22 +28,32 @@ public class MyStatement implements Statement {
 
 	@Override
 	public void addBatch(String sql) throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		batches.add(sql);
 	}
 
 	@Override
 	public void clearBatch() throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		batches.clear();
 	}
 
 	@Override
 	public void close() throws SQLException {
+
 		connection = null;
 		engine.closeEngine();
 	}
 
 	@Override
 	public boolean execute(String sql) throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		Object object = engine.execute(sql);
 		if (object instanceof Boolean) {
 			return (Boolean) object;
@@ -72,21 +76,34 @@ public class MyStatement implements Statement {
 
 	@Override
 	public int[] executeBatch() throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		int[] RowsAffected = new int[batches.size()];
 		for (int i = 0; i < RowsAffected.length; i++) {
 			String sql = batches.get(i);
-			Object object = engine.execute(sql);
-			if (object instanceof Integer) {
-				RowsAffected[i] = Integer.valueOf(String.valueOf(object));
-			} else {
-				RowsAffected[i] = 0;
+			Object object;
+			try {
+				object = engine.execute(sql);
+				if (object instanceof Integer) {
+					RowsAffected[i] = Integer.valueOf(String.valueOf(object));
+				} else {
+					RowsAffected[i] = SUCCESS_NO_INFO;
+				}
+			} catch (Exception e) {
+				RowsAffected[i] = EXECUTE_FAILED;
 			}
+			
+
 		}
 		return RowsAffected;
 	}
 
 	@Override
 	public ResultSet executeQuery(String sql) throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		Object[][] result = engine.executeQuery(sql);
 		Map<String, Object> map = engine.getCurrentTableMetaData();
 		String[] columns = (String[]) map.get("columns");
@@ -99,21 +116,33 @@ public class MyStatement implements Statement {
 
 	@Override
 	public int executeUpdate(String sql) throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		return engine.executeUpdateQuery(sql);
 	}
 
 	@Override
 	public Connection getConnection() throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		return connection;
 	}
 
 	public int getQueryTimeout() throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		// TODO Auto-generated method stub
 		return timeout;
 	}
 
 	@Override
 	public void setQueryTimeout(int seconds) throws SQLException {
+		if (connection == null) {
+			throw new SQLException();
+		}
 		timeout = seconds;
 
 	}
@@ -131,7 +160,7 @@ public class MyStatement implements Statement {
 	@Override
 	public void cancel() throws SQLException {
 		throw new UnsupportedOperationException();
-	}	
+	}
 
 	@Override
 	public void clearWarnings() throws SQLException {
