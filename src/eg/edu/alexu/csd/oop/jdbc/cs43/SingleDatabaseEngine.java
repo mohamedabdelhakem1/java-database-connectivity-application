@@ -3,6 +3,7 @@ package eg.edu.alexu.csd.oop.jdbc.cs43;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 import eg.edu.alexu.csd.oop.db.Database;
@@ -76,8 +77,9 @@ public class SingleDatabaseEngine implements EngineDecorator{
 
 		} else if (strs[0].equalsIgnoreCase("delete") || strs[0].equalsIgnoreCase("insert")
 				|| (strs[0].equalsIgnoreCase("update"))) {
-
-			return Integer.valueOf(executeUpdateQuery(sql));
+			int UpdateCount =  Integer.valueOf(executeUpdateQuery(sql));
+			MyLogger.getLogger().log(Level.INFO,"a update query is executed");
+			return UpdateCount;
 
 		} else if (strs[0].equalsIgnoreCase("select")) {
 

@@ -1,5 +1,6 @@
 package eg.edu.alexu.csd.oop.jdbc.cs43;
 
+import java.io.File;
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.CallableStatement;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
+import java.util.logging.Level;
 
 import eg.edu.alexu.csd.oop.db.Database;
 import eg.edu.alexu.csd.oop.db.cs43.DataBaseBufferPool;
@@ -39,13 +41,16 @@ public class MyConnection implements Connection {
 
 	@Override
 	public Statement createStatement() throws SQLException {
-		Statement statement = new MyStatement(this , path);
+		MyLogger.getLogger().log(Level.INFO, "a statement is created");
+		MyLogger.getLogger().log(Level.WARNING, "call statement.close() to save changes");
+		Statement statement = new MyStatement(this, path);
 		statements.add(statement);
 		return statement;
 	}
 
 	@Override
 	public void close() throws SQLException {
+		MyLogger.getLogger().log(Level.INFO, "connection to path" + new File(path).getAbsolutePath() + "is closed");
 		ConnectionManager manager = ConnectionManager.getInstance();
 		manager.releaseConnection(path);
 		for (int i = 0; i < statements.size(); i++) {

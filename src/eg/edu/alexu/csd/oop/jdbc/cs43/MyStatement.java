@@ -3,6 +3,9 @@ package eg.edu.alexu.csd.oop.jdbc.cs43;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+
+import javax.sound.midi.MidiDevice.Info;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -29,22 +32,26 @@ public class MyStatement implements Statement {
 	@Override
 	public void addBatch(String sql) throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
+		MyLogger.getLogger().log(Level.INFO,"a sql query is added to the batch");
 		batches.add(sql);
 	}
 
 	@Override
 	public void clearBatch() throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
+		MyLogger.getLogger().log(Level.INFO,"sql batch is cleared");
 		batches.clear();
 	}
 
 	@Override
 	public void close() throws SQLException {
-
+		MyLogger.getLogger().log(Level.INFO,"a statment is closed");
 		connection = null;
 		engine.closeEngine();
 	}
@@ -52,18 +59,22 @@ public class MyStatement implements Statement {
 	@Override
 	public boolean execute(String sql) throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
 		Object object = engine.execute(sql);
 		if (object instanceof Boolean) {
+			MyLogger.getLogger().log(Level.INFO,"a structure query is executed");
 			return (Boolean) object;
 		} else if (object instanceof Integer) {
+			MyLogger.getLogger().log(Level.INFO,"an update query is executed");
 			if ((Integer) object > 0) {
 				return true;
 			} else {
 				return false;
 			}
 		} else if (object instanceof Object[][]) {
+			MyLogger.getLogger().log(Level.INFO,"a select query is executed");
 			if (object == null || ((Object[][]) object).length > 0) {
 				return true;
 			}
@@ -77,20 +88,29 @@ public class MyStatement implements Statement {
 	@Override
 	public int[] executeBatch() throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
 		int[] RowsAffected = new int[batches.size()];
+		if(batches.isEmpty()) {
+			MyLogger.getLogger().log(Level.WARNING,"batch is empty");
+		}else {
+			MyLogger.getLogger().log(Level.INFO,"batch of queries will be executed");
+		}
 		for (int i = 0; i < RowsAffected.length; i++) {
 			String sql = batches.get(i);
 			Object object;
 			try {
 				object = engine.execute(sql);
+				MyLogger.getLogger().log(Level.INFO,"a query from the batch is executed successfully");
 				if (object instanceof Integer) {
 					RowsAffected[i] = Integer.valueOf(String.valueOf(object));
 				} else {
+					
 					RowsAffected[i] = SUCCESS_NO_INFO;
 				}
 			} catch (Exception e) {
+				MyLogger.getLogger().log(Level.SEVERE,"query failure");
 				RowsAffected[i] = EXECUTE_FAILED;
 			}
 			
@@ -102,6 +122,7 @@ public class MyStatement implements Statement {
 	@Override
 	public ResultSet executeQuery(String sql) throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
 		Object[][] result = engine.executeQuery(sql);
@@ -109,7 +130,7 @@ public class MyStatement implements Statement {
 		String[] columns = (String[]) map.get("columns");
 		String[] types = (String[]) map.get("types");
 		ResultSetMetaData data = new MyResultSetMetaData((String) map.get("tablename"), types, columns);
-
+		MyLogger.getLogger().log(Level.INFO,"a select query is executed");
 		ResultSet resultSet = new MyResultset(data, result, columns, this);
 		return resultSet;
 	}
@@ -117,32 +138,39 @@ public class MyStatement implements Statement {
 	@Override
 	public int executeUpdate(String sql) throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
+		
 		return engine.executeUpdateQuery(sql);
 	}
 
 	@Override
 	public Connection getConnection() throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
+		
 		return connection;
 	}
 
 	public int getQueryTimeout() throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
-		// TODO Auto-generated method stub
+		
 		return timeout;
 	}
 
 	@Override
 	public void setQueryTimeout(int seconds) throws SQLException {
 		if (connection == null) {
+			MyLogger.getLogger().log(Level.SEVERE,"connection is closed , query cannnot be executed");
 			throw new SQLException();
 		}
+		MyLogger.getLogger().log(Level.INFO,"query timeout is set");
 		timeout = seconds;
 
 	}

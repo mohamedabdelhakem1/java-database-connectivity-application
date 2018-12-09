@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.LinkedBlockingDeque;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -24,6 +25,7 @@ public class JDBCDriver implements Driver {
 	@Override
 	public boolean acceptsURL(String url) throws SQLException {
 		if (url.equals("jdbc:xmldb://localhost")) {
+			MyLogger.getLogger().log(Level.INFO,"url is accepted , jdbc driver is active now");
 			return true;
 		}
 		return false;
@@ -33,9 +35,10 @@ public class JDBCDriver implements Driver {
 	public Connection connect(String url, Properties info) throws SQLException {
 
 		if (acceptsURL(url)) {
-			
+		
 			File dir = (File) info.get("path");
 			String path = dir.getAbsolutePath();
+			MyLogger.getLogger().log(Level.INFO, "driver is connected to the path" + path);
 			ConnectionManager connectionManager = ConnectionManager.getInstance();
 			return connectionManager.acquireConnection(path);
 		}

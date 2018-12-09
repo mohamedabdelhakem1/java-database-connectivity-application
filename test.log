@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="windows-1256" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2018-12-09T20:47:10</date>
+  <millis>1544377630130</millis>
+  <sequence>0</sequence>
+  <logger>eg.edu.alexu.csd.oop.jdbc.cs43.MyLogger</logger>
+  <level>INFO</level>
+  <class>eg.edu.alexu.csd.oop.jdbc.cs43.JDBCDriver</class>
+  <method>acceptsURL</method>
+  <thread>1</thread>
+  <message>url is accepted , jdbc driver is active now</message>
+</record>
+<record>
+  <date>2018-12-09T20:47:10</date>
+  <millis>1544377630132</millis>
+  <sequence>1</sequence>
+  <logger>eg.edu.alexu.csd.oop.jdbc.cs43.MyLogger</logger>
+  <level>INFO</level>
+  <class>eg.edu.alexu.csd.oop.jdbc.cs43.JDBCDriver</class>
+  <method>connect</method>
+  <thread>1</thread>
+  <message>driver is connected to the pathC:\Users\SHIKO\Desktop\sample\database1</message>
+</record>
+<record>
+  <date>2018-12-09T20:47:10</date>
+  <millis>1544377630136</millis>
+  <sequence>2</sequence>
+  <logger>eg.edu.alexu.csd.oop.jdbc.cs43.MyLogger</logger>
+  <level>INFO</level>
+  <class>eg.edu.alexu.csd.oop.jdbc.cs43.MyConnection</class>
+  <method>createStatement</method>
+  <thread>1</thread>
+  <message>a statement is created</message>
+</record>
+<record>
+  <date>2018-12-09T20:47:10</date>
+  <millis>1544377630137</millis>
+  <sequence>3</sequence>
+  <logger>eg.edu.alexu.csd.oop.jdbc.cs43.MyLogger</logger>
+  <level>WARNING</level>
+  <class>eg.edu.alexu.csd.oop.jdbc.cs43.MyConnection</class>
+  <method>createStatement</method>
+  <thread>1</thread>
+  <message>call statement.close() to save changes</message>
+</record>
+<record>
+  <date>2018-12-09T20:47:10</date>
+  <millis>1544377630244</millis>
+  <sequence>4</sequence>
+  <logger>eg.edu.alexu.csd.oop.jdbc.cs43.MyLogger</logger>
+  <level>INFO</level>
+  <class>eg.edu.alexu.csd.oop.jdbc.cs43.MyStatement</class>
+  <method>execute</method>
+  <thread>1</thread>
+  <message>a structure query is executed</message>
+</record>
+<record>
+  <date>2018-12-09T20:47:10</date>
+  <millis>1544377630295</millis>
+  <sequence>5</sequence>
+  <logger>eg.edu.alexu.csd.oop.jdbc.cs43.MyLogger</logger>
+  <level>INFO</level>
+  <class>eg.edu.alexu.csd.oop.jdbc.cs43.MyStatement</class>
+  <method>execute</method>
+  <thread>1</thread>
+  <message>a structure query is executed</message>
+</record>
+<record>
+  <date>2018-12-09T20:47:10</date>
+  <millis>1544377630296</millis>
+  <sequence>6</sequence>
+  <logger>eg.edu.alexu.csd.oop.jdbc.cs43.MyLogger</logger>
+  <level>INFO</level>
+  <class>eg.edu.alexu.csd.oop.jdbc.cs43.MyStatement</class>
+  <method>close</method>
+  <thread>1</thread>
+  <message>a statment is closed</message>
+</record>
+</log>

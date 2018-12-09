@@ -1,33 +1,46 @@
 package eg.edu.alexu.csd.oop.jdbc.cs43;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
+import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 public class MyLogger {
-	private static final Logger LOGGER = Logger.getLogger(MyLogger.class.getName());
 
-	public static void main(String[] args) {
-		LOGGER.info("Logger Name: " + LOGGER.getName());
+	private static Logger LOGGER;
+	private static LogManager logManager;
 
-		LOGGER.warning("Can cause ArrayIndexOutOfBoundsException");
+	private MyLogger() {
 
-		// An array of size 3
+	}
 
-		int[] a = { 1, 2, 3 };
+	public static Logger getLogger() {
+		if (logManager == null && LOGGER == null) {
+			logManager = LogManager.getLogManager();
+			Handler handler;
+			try {
 
-		int index = 4;
+				FileInputStream fileInputStream = new FileInputStream(new File("logging.properties"));
+				logManager.readConfiguration(fileInputStream);
+			} catch (Exception e1) {
 
-		LOGGER.config("index is set to " + index);
+			}
 
-		try {
+			LOGGER = Logger.getLogger(MyLogger.class.getName());
+			try {
+				handler = new FileHandler("test.log");
+				Logger.getLogger("").addHandler(handler);
+			} catch (Exception e) {
 
-			System.out.println(a[index]);
-
-		} catch (ArrayIndexOutOfBoundsException ex) {
-
-			LOGGER.log(Level.SEVERE, "Exception occur", ex);
-
+			}
 		}
+		return LOGGER;
 
 	}
 }

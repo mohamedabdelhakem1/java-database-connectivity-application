@@ -37,7 +37,7 @@ public class ConnectionManager implements ConnectionPool {
 				} else {
 					unClosedConnections.remove(e.getKey()); // collected by the GC
 				}
-			} else { // did not entered the if condition if it is not expired
+			} else { // not expired
 				if (e.getKey().equalsIgnoreCase(path)) { // revive it before expiration
 					revive(e.getKey());
 				}
