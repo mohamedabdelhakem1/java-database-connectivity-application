@@ -26,13 +26,15 @@ public class test {
 		info.put("path",new File("C:\\Users\\SHIKO\\Desktop\\"+"sample" + System.getProperty("file.separator") +"database1"));
 		Connection connection = driver.connect("jdbc:xmldb://localhost", info);
 		Statement statement = connection.createStatement();
+		statement.setQueryTimeout(1);
 		statement.execute("create database dbas");
 		statement.execute("drop database dbas ");
-	/*	statement.execute("create table table1 ( column1 int ,column2 varchar )");
-		statement.execute("insert into table1 values ( 12 , 'sd')");
-		statement.execute("insert into table1 values ( 13 , 'sd' )");
-		statement.execute("insert into table1 values ( 14 , 'sd' )");
-		ResultSet set = statement.executeQuery("select * from table1 where column1 > 11 ");
+		
+		statement.execute("create table table1 ( column1 int ,column2 varchar )");
+		statement.executeUpdate("insert into table1 values ( 12 , 'sd')");
+		statement.executeUpdate("insert into table1 values ( 13 , 'sd' )");
+		statement.executeUpdate("insert into table1 values ( 14 , 'sd' )");
+	//	ResultSet set = statement.executeQuery("select * from table1 where column1 > 11 ");
 		
 	/*	while (set.next()) {
 			System.out.println("value " +set.getInt(1) +" " +set.getString(2));

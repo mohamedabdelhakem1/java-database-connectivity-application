@@ -78,7 +78,7 @@ public class SingleDatabaseEngine implements EngineDecorator{
 		} else if (strs[0].equalsIgnoreCase("delete") || strs[0].equalsIgnoreCase("insert")
 				|| (strs[0].equalsIgnoreCase("update"))) {
 			int UpdateCount =  Integer.valueOf(executeUpdateQuery(sql));
-			MyLogger.getLogger().log(Level.INFO,"a update query is executed");
+
 			return UpdateCount;
 
 		} else if (strs[0].equalsIgnoreCase("select")) {
