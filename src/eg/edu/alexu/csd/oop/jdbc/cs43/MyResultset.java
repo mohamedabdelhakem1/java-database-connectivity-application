@@ -26,7 +26,7 @@ import java.util.Map;
 public class MyResultset implements ResultSet {
 	private ResultSetMetaData data;
 	private Object[][] table;
-	private int Cursor = 0;
+	private int Cursor;
 	private Statement statement;
 	private Map<String, Integer> columns;
 
@@ -44,6 +44,7 @@ public class MyResultset implements ResultSet {
 	public MyResultset(ResultSetMetaData data, Object[][] table, String[] columns, Statement statement) {
 		this.table = table;
 		this.data = data;
+		Cursor = 0;
 		this.columns = new HashMap<>();
 		this.statement = statement;
 		for (int i = 0; i < columns.length; i++) {
@@ -67,7 +68,7 @@ public class MyResultset implements ResultSet {
 			Cursor = arg0;
 			return false;
 		} else if (arg0 >= 1) {
-			if (arg0 <= table.length+1) {
+			if (arg0 <= table.length + 1) {
 				Cursor = arg0;
 			} else {
 				Cursor = table.length + 1;

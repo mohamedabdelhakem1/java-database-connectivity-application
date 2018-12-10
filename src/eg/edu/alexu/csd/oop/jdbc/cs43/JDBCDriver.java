@@ -33,7 +33,9 @@ public class JDBCDriver implements Driver {
 
 	@Override
 	public Connection connect(String url, Properties info) throws SQLException {
-
+		if(url == null) {
+			throw new SQLException();
+		}
 		if (acceptsURL(url)) {
 		
 			File dir = (File) info.get("path");
@@ -42,7 +44,7 @@ public class JDBCDriver implements Driver {
 			ConnectionManager connectionManager = ConnectionManager.getInstance();
 			return connectionManager.acquireConnection(path);
 		}
-		return null;
+		throw new SQLException();
 	}
 
 	@Override

@@ -49,11 +49,13 @@ public class SingleDatabaseEngine implements EngineDecorator{
 	// returns the current meta data of the table in case of select query.
 	public Map<String, Object> getCurrentTableMetaData() {
 		if (select) {
-			return MyDatabase.getCurrentTableMetaData();
+			Map<String, Object> map = MyDatabase.getCurrentTableMetaData();
+			if (map != null) {
+				return map;
+			}
 		}
 		return null;
 	}
-
 	public Object execute(String sql) throws SQLException {
 		String pattern = "(\\s+)";
 		Pattern pat = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
