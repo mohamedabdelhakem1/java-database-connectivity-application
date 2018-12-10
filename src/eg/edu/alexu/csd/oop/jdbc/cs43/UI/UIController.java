@@ -32,7 +32,8 @@ public class UIController {
 	private TextArea output;
 	@FXML
 	private Button path;
-	private TableView<List<String>> table;
+	
+	private TableView table;
 	private String filePath;
 	private Stage stage;
 	private DriverInstance driverInstance;
@@ -59,14 +60,14 @@ public class UIController {
 	public void fileChooseOpen() {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 		directoryChooser.setTitle("Open Resource File");
-		directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		
 		File file = directoryChooser.showDialog(stage);
 
 		if (file == null) {
 			connected = false;
 		} else {
 			connected = true;
-			driverInstance.StartConnection(file.getAbsolutePath(), output);
+			driverInstance.StartConnection(file.getAbsolutePath(), output,table);
 		}
 
 	}

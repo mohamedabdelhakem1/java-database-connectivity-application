@@ -140,7 +140,7 @@
     <end type="SOURCE" refId="2"/>    
     <end type="TARGET" refId="4"/>  
   </message>  
-  <message id="7" operation="StartConnection(java.lang.String,javafx.scene.control.TextArea):void" asynchronous="false">    
+  <message id="7" asynchronous="false">    
     <end type="SOURCE" refId="6"/>    
     <end type="TARGET" refId="8"/>  
   </message>  

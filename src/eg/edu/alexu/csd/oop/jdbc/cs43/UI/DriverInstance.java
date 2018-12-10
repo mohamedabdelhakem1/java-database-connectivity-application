@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,7 +30,7 @@ import eg.edu.alexu.csd.oop.jdbc.cs43.JDBCDriver;
 
 public class DriverInstance {
 	private Driver driver;
-	private TableView<List<String>> table;
+	private TableView table;
 	private String url;
 	private Statement statement;
 	private Connection connection;
@@ -40,8 +41,8 @@ public class DriverInstance {
 		url = "jdbc:xmldb://localhost";
 	}
 
-	public void StartConnection(String path, TextArea area) {
-		
+	public void StartConnection(String path, TextArea area, TableView table) {
+		this.table = table;
 		this.output = area;
 		Properties info = new Properties();
 		info.put("path", new File(path));
@@ -102,26 +103,40 @@ public class DriverInstance {
 					}
 					output.appendText("\n");
 				}
-				/*
-				 * ObservableList<List<String>> tabledata = FXCollections.observableArrayList();
-				 * 
-				 * List<String> row ; while (resultSet.next()) { row = new LinkedList<>(); for
-				 * (int i = 1; i <= columnNumber; i++) {
-				 * row.add(String.valueOf(resultSet.getObject(i))); } tabledata.add(row); } for
-				 * (int i = 1; i <= columnNumber; i++) { int s = i-1;
-				 * TableColumn<List<String>,String> column = new
-				 * TableColumn<>(data.getColumnName(i)); column.setCellValueFactory(new
-				 * Callback<CellDataFeatures<List<String>, String>, ObservableValue<String>>() {
-				 * public ObservableValue<String> call(CellDataFeatures<List<String>, String> p)
-				 * { try { return new
-				 * ReadOnlyObjectWrapper(p.getValue(),data.getColumnTypeName(s)); } catch
-				 * (SQLException e) { // TODO Auto-generated catch block e.printStackTrace(); }
-				 * return null; } });
-				 * 
-				 * table.getColumns().add(column); }
-				 * 
-				 * table.setItems(tabledata);
-				 */
+			/*.absolute(0);
+
+				ObservableList<List<String>> tabledata = FXCollections.observableArrayList();
+				tabledata.clear();
+				List<String> row;
+				while (resultSet.next()) {
+					row = new LinkedList<>();
+					for (int i = 1; i <= columnNumber; i++) {
+						row.add(String.valueOf(resultSet.getObject(i)));
+					}
+					tabledata.add(row);
+				}
+				for (int i = 1; i <= columnNumber; i++) {
+					int s = i - 1;
+					TableColumn<List<String>, String> column = new TableColumn<>(data.getColumnName(i));
+					column.setCellValueFactory(
+							new Callback<TableColumn.CellDataFeatures<List<String>, String>, ObservableValue<String>>() {
+								@Override
+								public ObservableValue<String> call(
+										TableColumn.CellDataFeatures<List<String>, String> p) {
+									List<String> x = p.getValue();
+									if (x != null && x.size() > 1) {
+										return new SimpleStringProperty(x.get(s));
+									} else {
+										return new SimpleStringProperty("<no value>");
+									}
+								}
+							});
+
+					table.getColumns().add(column);
+				}
+				
+				table.setItems(tabledata);
+			*/
 			} catch (SQLException e) {
 				output.setText("select query failed");
 			}
