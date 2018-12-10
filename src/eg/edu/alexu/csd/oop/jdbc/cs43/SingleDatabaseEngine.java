@@ -50,7 +50,7 @@ public class SingleDatabaseEngine implements EngineDecorator{
 	public Map<String, Object> getCurrentTableMetaData() {
 		if (select) {
 			Map<String, Object> map = MyDatabase.getCurrentTableMetaData();
-			if (map != null) {
+			if (map != null) {	
 				return map;
 			}
 		}

@@ -25,7 +25,6 @@ public class MyLogger {
 			logManager = LogManager.getLogManager();
 			Handler handler;
 			try {
-
 				FileInputStream fileInputStream = new FileInputStream(new File("logging.properties"));
 				logManager.readConfiguration(fileInputStream);
 			} catch (Exception e1) {
