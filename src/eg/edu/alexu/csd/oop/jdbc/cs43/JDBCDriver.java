@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 
 public class JDBCDriver implements Driver {
-
+	private ConnectionManager connectionManager;
 	public JDBCDriver() {
 		
 	}
@@ -41,7 +41,7 @@ public class JDBCDriver implements Driver {
 			File dir = (File) info.get("path");
 			String path = dir.getAbsolutePath();
 			MyLogger.getLogger().log(Level.INFO, "driver is connected to the path" + path);
-			ConnectionManager connectionManager = ConnectionManager.getInstance();
+			 connectionManager = ConnectionManager.getInstance();
 			return connectionManager.acquireConnection(path);
 		}
 		throw new SQLException();

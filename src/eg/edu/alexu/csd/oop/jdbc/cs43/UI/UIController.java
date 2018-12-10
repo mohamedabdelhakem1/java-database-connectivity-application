@@ -66,7 +66,7 @@ public class UIController {
 			connected = false;
 		} else {
 			connected = true;
-			driverInstance.StartConnection(file.getAbsolutePath(), output, table);
+			driverInstance.StartConnection(file.getAbsolutePath(), output);
 		}
 
 	}

@@ -2,6 +2,7 @@ package eg.edu.alexu.csd.oop.jdbc.cs43.UI;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -27,7 +28,7 @@ import javafx.util.Callback;
 import eg.edu.alexu.csd.oop.jdbc.cs43.JDBCDriver;
 
 public class DriverInstance {
-	private JDBCDriver driver;
+	private Driver driver;
 	private TableView<List<String>> table;
 	private String url;
 	private Statement statement;
@@ -39,8 +40,8 @@ public class DriverInstance {
 		url = "jdbc:xmldb://localhost";
 	}
 
-	public void StartConnection(String path, TextArea area, TableView<List<String>> tableView) {
-		this.table = tableView;
+	public void StartConnection(String path, TextArea area) {
+		
 		this.output = area;
 		Properties info = new Properties();
 		info.put("path", new File(path));

@@ -17,6 +17,7 @@ import java.sql.Statement;
 
 public class MyStatement implements Statement {
 	// columns are one based
+	private TimeLimitedCodeBlock block;
 	private List<String> batches;
 	private Connection connection;
 	private SingleDatabaseEngine engine;
