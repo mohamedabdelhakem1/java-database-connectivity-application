@@ -30,6 +30,7 @@ import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
 public class MyConnection implements Connection {
 	private String path;
 	private String url;
+
 	private List<Statement> statements;
 
 	public MyConnection(String path, String url) {
@@ -56,6 +57,7 @@ public class MyConnection implements Connection {
 		for (int i = 0; i < statements.size(); i++) {
 			statements.get(i).close();
 		}
+
 	}
 
 	@Override
