@@ -36,7 +36,7 @@ public class SingleDatabaseEngine implements EngineAdapter{
 	}
 
 	public Object[][] executeQuery(String sql) throws SQLException {
-		
+		select = true;
 		return database.executeQuery(sql);
 	}
 

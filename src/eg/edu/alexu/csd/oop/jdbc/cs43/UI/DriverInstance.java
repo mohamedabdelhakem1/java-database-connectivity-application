@@ -7,24 +7,20 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
-import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.property.ReadOnlyStringWrapper;
+import org.omg.PortableInterceptor.SUCCESSFUL;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import eg.edu.alexu.csd.oop.jdbc.cs43.JDBCDriver;
 
@@ -56,6 +52,49 @@ public class DriverInstance {
 			}
 		} catch (SQLException e) {
 			output.setText("connection failed");
+		}
+	}
+
+	public void addBatch(String sql) {
+		if (statement != null) {
+			try {
+				statement.addBatch(sql);
+				output.setText("batch added successfully");
+			} catch (SQLException e) {
+				output.setText("adding batch failed");
+			}
+		}
+	}
+	public void clearBatch() {
+		if (statement != null) {
+			try {
+				statement.clearBatch();
+				output.setText("batch cleared successfully");
+			} catch (SQLException e) {
+				output.setText("clearing batch failed");
+			}
+		}
+	}
+	public void executeBatch() {
+		if (statement != null) {
+			try {
+				output.clear();
+				int[] results = statement.executeBatch();
+				output.appendText("batch results :\n");
+				
+				for (int i = 0; i < results.length; i++) {
+					if (results[i] == java.sql.Statement.SUCCESS_NO_INFO) {
+						output.appendText("query succeeded with no info");
+					} else if (results[i] == java.sql.Statement.EXECUTE_FAILED) {
+						output.appendText("query failed");
+					} else {
+						output.appendText("number "+String.valueOf(i+1)+": " +results[i]);
+					}
+					output.appendText("\n");
+				}
+			} catch (SQLException e) {
+				output.setText("batch execution failed");
+			}
 		}
 	}
 
@@ -91,18 +130,14 @@ public class DriverInstance {
 				ResultSet resultSet = statement.executeQuery(request);
 				ResultSetMetaData data = resultSet.getMetaData();
 				int columnNumber = data.getColumnCount();
-				/*for (int i = 0; i < columnNumber; i++) {
-					output.appendText(data.getColumnName(i + 1));
-					output.appendText("\t\t");
-				}
-				output.appendText("\n");
-				while (resultSet.next()) {
-					for (int i = 1; i <= columnNumber; i++) {
-						output.appendText(String.valueOf(resultSet.getObject(i)));
-						output.appendText("\t\t");
-					}
-					output.appendText("\n");
-				}*/
+				/*
+				 * for (int i = 0; i < columnNumber; i++) {
+				 * output.appendText(data.getColumnName(i + 1)); output.appendText("\t\t"); }
+				 * output.appendText("\n"); while (resultSet.next()) { for (int i = 1; i <=
+				 * columnNumber; i++) {
+				 * output.appendText(String.valueOf(resultSet.getObject(i)));
+				 * output.appendText("\t\t"); } output.appendText("\n"); }
+				 */
 				resultSet.absolute(0);
 
 				ObservableList<TableColumn<List<String>, String>> allitems = table.getColumns();
@@ -118,11 +153,11 @@ public class DriverInstance {
 					}
 					tabledata.add(row);
 				}
-				
+
 				for (int i = 1; i <= columnNumber; i++) {
 					int s = i - 1;
 					TableColumn<List<String>, String> column = new TableColumn<>(data.getColumnName(i));
-					
+
 					column.setCellValueFactory(
 							new Callback<TableColumn.CellDataFeatures<List<String>, String>, ObservableValue<String>>() {
 								@Override
