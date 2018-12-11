@@ -32,8 +32,9 @@ public class UIController {
 	private TextArea output;
 	@FXML
 	private Button path;
-	
+	@FXML
 	private TableView table;
+	
 	private String filePath;
 	private Stage stage;
 	private DriverInstance driverInstance;

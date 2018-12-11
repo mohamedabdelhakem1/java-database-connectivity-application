@@ -91,7 +91,7 @@ public class DriverInstance {
 				ResultSet resultSet = statement.executeQuery(request);
 				ResultSetMetaData data = resultSet.getMetaData();
 				int columnNumber = data.getColumnCount();
-				for (int i = 0; i < columnNumber; i++) {
+				/*for (int i = 0; i < columnNumber; i++) {
 					output.appendText(data.getColumnName(i + 1));
 					output.appendText("\t\t");
 				}
@@ -102,11 +102,14 @@ public class DriverInstance {
 						output.appendText("\t\t");
 					}
 					output.appendText("\n");
-				}
-			/*.absolute(0);
+				}*/
+				resultSet.absolute(0);
+
+				ObservableList<TableColumn<List<String>, String>> allitems = table.getColumns();
+				allitems.remove(0, allitems.size());
 
 				ObservableList<List<String>> tabledata = FXCollections.observableArrayList();
-				tabledata.clear();
+
 				List<String> row;
 				while (resultSet.next()) {
 					row = new LinkedList<>();
@@ -115,16 +118,18 @@ public class DriverInstance {
 					}
 					tabledata.add(row);
 				}
+				
 				for (int i = 1; i <= columnNumber; i++) {
 					int s = i - 1;
 					TableColumn<List<String>, String> column = new TableColumn<>(data.getColumnName(i));
+					
 					column.setCellValueFactory(
 							new Callback<TableColumn.CellDataFeatures<List<String>, String>, ObservableValue<String>>() {
 								@Override
 								public ObservableValue<String> call(
 										TableColumn.CellDataFeatures<List<String>, String> p) {
 									List<String> x = p.getValue();
-									if (x != null && x.size() > 1) {
+									if (x != null && x.size() >= 1) {
 										return new SimpleStringProperty(x.get(s));
 									} else {
 										return new SimpleStringProperty("<no value>");
@@ -134,9 +139,9 @@ public class DriverInstance {
 
 					table.getColumns().add(column);
 				}
-				
+
 				table.setItems(tabledata);
-			*/
+
 			} catch (SQLException e) {
 				output.setText("select query failed");
 			}

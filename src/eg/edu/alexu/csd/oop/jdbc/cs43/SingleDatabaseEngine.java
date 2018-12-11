@@ -21,11 +21,14 @@ public class SingleDatabaseEngine implements EngineDecorator{
 		
 		database = MyDatabase.getInstance();
 		MyDatabase.setParentFolder(path + System.getProperty("file.separator"));
+		
 	}
 
 	public boolean CreateDatabase(String databaseName) {
+		
 		File file = new File(database.createDatabase(databaseName, false));
 		return file.exists();
+	
 	}
 
 	public boolean executeStructureQuery(String sql) throws SQLException {
