@@ -21,7 +21,7 @@ public class MyStatement implements Statement {
 	private List<String> batches;
 	private Connection connection;
 	private SingleDatabaseEngine engine;
-	private int timeout = 2;
+	private int timeout = 3;
 	private String path;
 	private Object object;
 	private Object objectInt;

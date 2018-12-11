@@ -1,11 +1,15 @@
 package eg.edu.alexu.csd.oop.jdbc.cs43.UI;
 
 import java.io.File;
+import java.util.Optional;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.DirectoryChooser;
@@ -47,7 +51,26 @@ public class UIController {
 		}
 
 	}
+	@FXML
+	public void openDialogSetTime() {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("query time out");
+		dialog.setHeaderText("JDBC");
+		dialog.setContentText("Please number of seconds");
 
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+			try {
+				driverInstance.setquerytime(Integer.valueOf(result.get()));
+				System.out.println(result.get());
+			} catch (NumberFormatException e) {
+				
+			}
+		}
+	}
+	
+	
 	@FXML
 	public void addBatch() {
 		if (connected) {

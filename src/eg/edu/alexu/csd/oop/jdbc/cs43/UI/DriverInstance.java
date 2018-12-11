@@ -31,7 +31,7 @@ public class DriverInstance {
 	private Statement statement;
 	private Connection connection;
 	private TextArea output;
-
+	private int queryTime = 10;
 	public DriverInstance() {
 		driver = new JDBCDriver();
 		url = "jdbc:xmldb://localhost";
@@ -47,14 +47,22 @@ public class DriverInstance {
 			output.setText("connected to the choosed folder successfully");
 			statement = connection.createStatement();
 			try {
-				statement.setQueryTimeout(10);
+				statement.setQueryTimeout(queryTime);
 			} catch (SQLException e) {
 			}
 		} catch (SQLException e) {
 			output.setText("connection failed");
 		}
 	}
-
+	public void setquerytime(int i) {
+		if(statement != null) {
+			try {
+				queryTime = i;
+				statement.setQueryTimeout(i);
+			} catch (SQLException e) {
+			}
+		}
+	}
 	public void addBatch(String sql) {
 		if (statement != null) {
 			try {
