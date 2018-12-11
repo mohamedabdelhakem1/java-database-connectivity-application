@@ -11,7 +11,7 @@ import eg.edu.alexu.csd.oop.db.Database;
 import eg.edu.alexu.csd.oop.db.cs43.concreteclass.MyDatabase;
 
 // decorator
-public class SingleDatabaseEngine implements EngineDecorator{
+public class SingleDatabaseEngine implements EngineAdapter{
 	
 	private Database database;
 	private boolean select = false;
@@ -36,7 +36,7 @@ public class SingleDatabaseEngine implements EngineDecorator{
 	}
 
 	public Object[][] executeQuery(String sql) throws SQLException {
-		select = true;
+		
 		return database.executeQuery(sql);
 	}
 

@@ -3,7 +3,7 @@ package eg.edu.alexu.csd.oop.jdbc.cs43;
 import java.sql.SQLException;
 import java.util.Map;
 
-public interface EngineDecorator {
+public interface EngineAdapter {
 	public boolean CreateDatabase(String databaseName);
 
 	public boolean executeStructureQuery(String sql) throws SQLException;
